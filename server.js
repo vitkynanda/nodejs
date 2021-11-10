@@ -1,3 +1,4 @@
+//Dependencies
 const http = require("http");
 const https = require("https");
 const url = require("url");
@@ -10,7 +11,7 @@ const httpServer = http.createServer((req, res) => {
   undefinedServer(req, res);
 });
 
-// Start the server
+// Start the http server
 httpServer.listen(config.httpPort, () =>
   console.log(
     `Server is running on port ${config.httpPort} in ${config.name} mode`
@@ -71,10 +72,10 @@ const undefinedServer = function (req, res) {
 
     //Construct the data object to send to the handler
     const data = {
-      trimmedPath: trimmedPath,
-      queryStringObject: queryStringObject,
-      method: method,
-      headers: headers,
+      trimmedPath,
+      queryStringObject,
+      method,
+      headers,
       payload: buffer,
     };
 
@@ -103,6 +104,11 @@ const undefinedServer = function (req, res) {
 //Define the handler
 const handlers = {};
 
+//Handler ping
+handlers.ping = function (data, callback) {
+  callback(200);
+};
+
 //Handler sample
 handlers.sample = function (data, callback) {
   // Callback http status code and payload  object
@@ -118,4 +124,5 @@ handlers.notFound = function (data, callback) {
 //Define route
 const route = {
   sample: handlers.sample,
+  ping: handlers.ping,
 };
